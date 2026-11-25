@@ -1,0 +1,6 @@
+{
+  "name": "Hodan Hospital — Cardiac & Multispecialty Medical Center",
+  "description": "Cinematic 3D healthcare experience and comprehensive medical portal for Hodan Hospital, featuring an interactive anatomical beating heart, specialized clinical departments, modern surgical facilities, and online appointment booking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

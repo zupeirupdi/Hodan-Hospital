@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-hodan-obsidian: #080D10;
+  --color-hodan-slate: #34424A;
+  --color-hodan-teal: #1E7A88;
+  --color-hodan-cyan: #2DD4BF;
+  --color-hodan-gold: #EA9E24;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    background-color: #080D10;
+    color: #f8fafc;
+    overflow-x: hidden;
+  }
+
+  body {
+    background-color: #080D10;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-display);
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Primary reference luminous glass surfaces tuned to Hodan Slate + Teal + Gold (no backdrop-filter over WebGL) */
+.hero-glass-panel {
+  background: linear-gradient(
+    135deg,
+    rgba(52, 66, 74, 0.34) 0%,
+    rgba(24, 58, 66, 0.26) 50%,
+    rgba(10, 17, 21, 0.56) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 40px 100px -20px rgba(4, 8, 10, 0.88),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+.hero-subcard {
+  background: linear-gradient(
+    165deg,
+    rgba(52, 66, 74, 0.42) 0%,
+    rgba(20, 44, 50, 0.34) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.valve-callout-glass {
+  background: linear-gradient(
+    125deg,
+    rgba(234, 158, 36, 0.34) 0%,
+    rgba(180, 118, 28, 0.28) 55%,
+    rgba(52, 66, 74, 0.44) 100%
+  );
+  border: 1px solid rgba(251, 191, 36, 0.32);
+  box-shadow:
+    0 20px 44px -12px rgba(6, 10, 12, 0.72),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.obsidian-panel {
+  background: linear-gradient(160deg, rgba(22, 34, 40, 0.9) 0%, rgba(10, 16, 20, 0.97) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes scaleX {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marqueeScroll 32s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee {
+    animation: none;
+  }
+}
