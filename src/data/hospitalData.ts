@@ -84,8 +84,8 @@ export const HOSPITAL_CONTACT = {
 } as const;
 
 export const HOSPITAL_IMAGES = {
-  logoFull: '/assets/hospital/logo-full.png',
-  logoMark: '/assets/hospital/logo-mark.png',
+  logoFull: './assets/hospital/logo-full.png',
+  logoMark: './assets/hospital/logo-mark.png',
   exteriorBuilding: exteriorBuildingHq,
   exteriorRender: exteriorFacadeHq,
   receptionLobby: receptionLobbyHq,
