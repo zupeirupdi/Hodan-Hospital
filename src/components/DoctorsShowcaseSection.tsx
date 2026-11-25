@@ -156,6 +156,8 @@ export const DoctorsShowcaseSection: React.FC<DoctorsShowcaseSectionProps> = ({
                 src={HOSPITAL_IMAGES.medicalTeam}
                 alt="Hodan Hospital physicians, nurses, and medical leadership"
                 referrerPolicy="no-referrer"
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#080D10] via-[#080D10]/20 to-transparent" />

@@ -101,15 +101,34 @@ export const CardTunnel3DCanvas: React.FC<CardTunnel3DCanvasProps> = ({
     goldGlow.position.set(0, 1.4, -12);
     scene.add(goldGlow);
 
-    // Load 4K crisp textures cleanly
+    // Prepare textures lazily once user nears the Card Tunnel section
+    let disposed = false;
     const textureLoader = new THREE.TextureLoader();
     const maxAniso = isSoftwareGl ? 1 : Math.min(renderer.capabilities.getMaxAnisotropy(), 8);
-    const textures = TUNNEL_CARD_DEFS.map((def) => {
-      const tex = textureLoader.load(def.src);
-      tex.colorSpace = THREE.SRGBColorSpace;
-      tex.anisotropy = maxAniso;
-      return tex;
-    });
+    const textures: (THREE.Texture | null)[] = TUNNEL_CARD_DEFS.map(() => null);
+    const materialsByDef: THREE.MeshBasicMaterial[][] = TUNNEL_CARD_DEFS.map(() => []);
+    let texturesRequested = false;
+
+    const loadTunnelTextures = () => {
+      if (texturesRequested || disposed) return;
+      texturesRequested = true;
+      TUNNEL_CARD_DEFS.forEach((def, defIdx) => {
+        textureLoader.load(def.src, (tex) => {
+          if (disposed) {
+            tex.dispose();
+            return;
+          }
+          tex.colorSpace = THREE.SRGBColorSpace;
+          tex.anisotropy = maxAniso;
+          textures[defIdx] = tex;
+          for (const mat of materialsByDef[defIdx]) {
+            mat.color.setHex(0xffffff);
+            mat.map = tex;
+            mat.needsUpdate = true;
+          }
+        });
+      });
+    };
 
     // Subtle tunnel guide rings in Hodan Teal & Gold
     const ringGeo = new THREE.TorusGeometry(4.55, 0.014, 8, 72);
@@ -171,9 +190,10 @@ export const CardTunnel3DCanvas: React.FC<CardTunnel3DCanvasProps> = ({
       const z = -(i / cardCount) * tunnelSpan;
 
       const cardMat = new THREE.MeshBasicMaterial({
-        map: textures[defIdx],
+        color: 0x0f1f26,
         side: THREE.DoubleSide,
       });
+      materialsByDef[defIdx].push(cardMat);
 
       const borderMat = new THREE.MeshBasicMaterial({
         color: i % 3 === 0 ? 0xea9e24 : 0x2dd4bf,
@@ -276,17 +296,27 @@ export const CardTunnel3DCanvas: React.FC<CardTunnel3DCanvasProps> = ({
     });
     resizeObserver.observe(container);
 
-    let isVisible = true;
+    let isVisible = false;
     const visObserver = new IntersectionObserver(
       (entries) => {
-        isVisible = entries[0]?.isIntersecting ?? true;
+        isVisible = entries[0]?.isIntersecting ?? false;
       },
       { threshold: 0.02 }
     );
     visObserver.observe(container);
 
+    const preloadObserver = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          loadTunnelTextures();
+          preloadObserver.disconnect();
+        }
+      },
+      { rootMargin: '900px 0px', threshold: 0.01 }
+    );
+    preloadObserver.observe(container);
+
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let disposed = false;
     let frameId = 0;
     let lastTime = performance.now();
     let cruiseOffset = 0;
@@ -388,6 +418,7 @@ export const CardTunnel3DCanvas: React.FC<CardTunnel3DCanvasProps> = ({
       cancelAnimationFrame(frameId);
       clearTimeout(frameId);
       visObserver.disconnect();
+      preloadObserver.disconnect();
       resizeObserver.disconnect();
       canvas.removeEventListener('pointermove', onPointerMove);
       canvas.removeEventListener('pointerdown', onPointerDown);
@@ -400,7 +431,7 @@ export const CardTunnel3DCanvas: React.FC<CardTunnel3DCanvasProps> = ({
       ringMatGold.dispose();
       moteGeo.dispose();
       moteMat.dispose();
-      textures.forEach((t) => t.dispose());
+      textures.forEach((t) => t?.dispose());
       interactiveMeshes.forEach((m) => (m.material as THREE.Material).dispose());
       cardGroups.forEach((c) => c.borderMat.dispose());
       renderer.dispose();
@@ -420,7 +451,13 @@ export const CardTunnel3DCanvas: React.FC<CardTunnel3DCanvasProps> = ({
             onClick={() => onInspectCard(item)}
             className="relative overflow-hidden rounded-xl border border-white/15 bg-[#0D161B]"
           >
-            <img src={item.src} alt={item.title} className="h-full w-full object-cover" />
+            <img
+              src={item.src}
+              alt={item.title}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover"
+            />
           </button>
         ))}
       </div>

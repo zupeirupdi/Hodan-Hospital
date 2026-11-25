@@ -194,6 +194,8 @@ export const AboutStorySection: React.FC<AboutStorySectionProps> = ({
                 src={HOSPITAL_IMAGES.exteriorRender}
                 alt="Hodan Hospital architectural elevation design"
                 referrerPolicy="no-referrer"
+                loading="lazy"
+                decoding="async"
                 draggable={false}
                 className="absolute inset-0 h-full w-full object-cover"
               />
@@ -207,6 +209,8 @@ export const AboutStorySection: React.FC<AboutStorySectionProps> = ({
                   src={HOSPITAL_IMAGES.exteriorBuilding}
                   alt="Hodan Hospital real clinical campus in Hodan District"
                   referrerPolicy="no-referrer"
+                  loading="lazy"
+                  decoding="async"
                   draggable={false}
                   className="h-full w-full object-cover"
                 />
@@ -244,6 +248,8 @@ export const AboutStorySection: React.FC<AboutStorySectionProps> = ({
                   : 'Hodan Hospital sterile operating theater'
               }
               referrerPolicy="no-referrer"
+              loading="lazy"
+              decoding="async"
               className="h-full w-full object-cover"
             />
           )}

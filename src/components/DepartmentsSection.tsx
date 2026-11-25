@@ -208,6 +208,8 @@ export const DepartmentsSection: React.FC<DepartmentsSectionProps> = ({
                       key={item.id}
                       src={item.image}
                       alt={item.name}
+                      loading="lazy"
+                      decoding="async"
                       referrerPolicy="no-referrer"
                       className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${
                         selectedDept.id === item.id
@@ -220,6 +222,8 @@ export const DepartmentsSection: React.FC<DepartmentsSectionProps> = ({
                     <img
                       src={selectedDept.image}
                       alt={selectedDept.name}
+                      loading="lazy"
+                      decoding="async"
                       referrerPolicy="no-referrer"
                       className="h-full w-full object-cover"
                     />

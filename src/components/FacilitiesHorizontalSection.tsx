@@ -188,6 +188,8 @@ export const FacilitiesHorizontalSection: React.FC<FacilitiesHorizontalSectionPr
                       src={fac.image}
                       alt={fac.title}
                       referrerPolicy="no-referrer"
+                      loading="lazy"
+                      decoding="async"
                       draggable={false}
                       className="h-full w-full object-cover"
                     />

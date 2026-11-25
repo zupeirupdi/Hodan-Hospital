@@ -138,6 +138,8 @@ export const BookingAndContactSection: React.FC<BookingAndContactSectionProps> =
                   src={HOSPITAL_IMAGES.nicuPediatrics}
                   alt="Hodan Hospital NICU and maternal pediatric suite"
                   referrerPolicy="no-referrer"
+                  loading="lazy"
+                  decoding="async"
                   className="h-52 w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#080D10]/90 via-[#080D10]/20 to-transparent" />

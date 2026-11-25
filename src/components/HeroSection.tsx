@@ -159,6 +159,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <img
           src={HOSPITAL_IMAGES.exteriorBuilding}
           alt=""
+          fetchPriority="high"
+          decoding="async"
           className="h-full w-full scale-105 object-cover object-center opacity-[0.16] blur-[2px] saturate-75"
         />
         <div
